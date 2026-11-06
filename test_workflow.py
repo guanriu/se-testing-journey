@@ -4,7 +4,7 @@ import json
 from api_client import ApiClient
 
 def get_test_data():
-    with open("data/test_data.json","r","utf-8") as f:
+    with open("data/test_data.json","r",encoding="utf-8") as f:
         return json.load(f)
 @pytest.fixture
 def client():
