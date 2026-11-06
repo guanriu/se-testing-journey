@@ -1,23 +1,22 @@
 import requests
 import pytest
+import json
 from api_client import ApiClient
+
+def get_test_data():
+    with open("data/test_data.json","r","utf-8") as f:
+        return json.load(f)
 @pytest.fixture
 def client():
     return ApiClient(base_url="https://jsonplaceholder.typicode.com")
-def test_workflow_with_class(client):
-    new_post = {"title":"Day6作业","bode":"测试","userId":1}
-    create_res = client.post("/posts", json_data=new_post )
+
+@pytest.mark.parametrize("post_data",get_test_data())
+
+def test_workflow_with_class(client,post_data):
+    # new_post = {"title":"Day6作业","bode":"测试","userId":1}
+    print(f'\n正在测试发布帖子，标题为：{post_data.get("title")}')
+    create_res = client.post("/posts", json_data=post_data )
     assert create_res.status_code == 201
-    # 关键提取，从返回的JSON的字典中获取服务器生成的帖子ID
     created_post_id =create_res.json().get("id")
     get_res = client.get(f"/posts/{created_post_id}")
     assert get_res.status_code ==404
-
-    # ------接口2：查询帖子---------
-    # get_res = requests.get(bur_url + f"/posts/{created_post_id}",timeout=5)
-    # assert get_res.status_code == 404
-
-    # 验证查出来的内容，看是不是提交的内容
-    # get_data = get_res.json()
-    # assert get_data.get('title') == new_post['title']
-    # print(f"\n查询成功，返回的帖子内容是:{get_data}")
