@@ -20,7 +20,7 @@ def test_post_and_get_article():
     client = ForumClient("https://jsonplaceholder.typicode.com")
     # 调用发帖方法
     res_post = client.post_article(title="测试帖子",body="自动化测试内容")
-    #断言创建成功，创建成功之后返回201
+    #断言创建成功，创建成功然后返回201
     assert res_post.status_code == 201
     post_id = res_post.json()["id"]
     print(f"请求查询地址：{client.base_url}/posts/{post_id}")
